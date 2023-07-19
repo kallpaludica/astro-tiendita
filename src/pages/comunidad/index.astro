@@ -1,0 +1,55 @@
+---
+import Layout from "@layouts/Layout.astro";
+import { contentfulClient } from "@lib/contentful";
+import type { ComunidadPost } from "@lib/contentful";
+
+const slugify = (str: string) =>
+  str
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/[\s_-]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+const entries = await contentfulClient.getEntries<ComunidadPost>({
+  content_type: "comunidad",
+});
+
+const posts = entries.items.map((item: any) => {
+  const { title, description, slug, featuredImg, categoria } = item.fields;
+  const { createdAt } = item.sys;
+  return {
+    title,
+    slug,
+    description,
+    featuredImg,
+    categoria: slugify(item.fields.categoria),
+    textoPrincipal: item.fields.textoPrincipal,
+    createdAt: new Date(createdAt).toLocaleDateString(),
+  };
+});
+---
+
+<Layout title="Comunidad">
+  <main class="grid grid-cols-3 gap-6 max-w-7xl mx-auto pt-12">
+    {
+      posts.map((post) => (
+        <>
+          {post.description && (
+            <div class="">
+              <a href={`/comunidad/${post.categoria}/${post.slug}/`}>
+                <h2 class="text-2xl my-2">{post.title}</h2>
+              </a>
+              <img
+                src={`https:${post.featuredImg.fields.file.url}?fm=webp&fit=thumb&f=center&h=250&w=400`}
+              />
+              <time>{post.createdAt}</time>
+              <p>{post.description}</p>
+              <p>{post.categoria}</p>
+            </div>
+          )}
+        </>
+      ))
+    }
+  </main>
+</Layout>

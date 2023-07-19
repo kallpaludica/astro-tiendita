@@ -1,0 +1,29 @@
+---
+import GameCard from "@components/Games/GameCard.astro";
+const { collection } = Astro.props;
+
+const posts = collection
+  .filter(
+    (item: { fields: { title: string } }) => item.fields?.title !== undefined
+  )
+  .map((item: any) => ({
+    title: item.fields?.title,
+    imagenDestacada: item.fields?.imagenDestacada,
+    slug: item.fields?.slug,
+    GameAges: item.fields?.GameAges,
+    GameDuration: item.fields?.GameDuration,
+    GamePlayers: item.fields?.GamePlayers,
+    GameBuyPrice: item.fields?.GameBuyPrice,
+    GameInStock: item.fields?.GameInStock,
+  }));
+---
+
+<div
+  class="grid max-w-6xl grid-cols-1 gap-4 p-3 pb-12 mx-auto mt-16 bg-white sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+>
+  {
+    posts.map((post: any) => {
+      return <GameCard card={post} />;
+    })
+  }
+</div>

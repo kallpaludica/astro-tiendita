@@ -1,0 +1,24 @@
+---
+import SliderCollection from "./SliderCollection";
+import { contentfulClient } from "@lib/contentful";
+
+const entries = await contentfulClient.getEntries({
+  content_type: "colecciones",
+});
+
+const posts = entries.items.map((item: any) => {
+  const { title, slug, icono, CollectionDescription, CollectionGames } =
+    item.fields;
+  return {
+    title,
+    slug,
+    icono,
+    CollectionDescription,
+    CollectionGames,
+  };
+});
+---
+
+<section id="comunidad" class="scroll-mt-12">
+  <SliderCollection client:visible data={posts} />
+</section>

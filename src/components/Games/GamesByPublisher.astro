@@ -1,0 +1,36 @@
+---
+import GameCard from "@components/Games/GameCard.astro";
+import { contentfulClient } from "@lib/contentful";
+
+const { publisher } = Astro.props;
+
+const games = await contentfulClient.getEntries({
+  content_type: "articulos",
+  limit: 500,
+});
+
+const posts = games.items
+  .filter((item: any) => {
+    return item.fields?.publisher?.fields?.title === publisher;
+  })
+  .map((item: any) => ({
+    title: item.fields?.title,
+    imagenDestacada: item.fields?.imagenDestacada,
+    slug: item.fields?.slug,
+    GameAges: item.fields?.GameAges,
+    GameDuration: item.fields?.GameDuration,
+    GamePlayers: item.fields?.GamePlayers,
+    GameBuyPrice: item.fields?.GameBuyPrice,
+    GameInStock: item.fields?.GameInStock,
+  }));
+---
+
+<div>
+  <div class="grid grid-cols-4 gap-12">
+    {
+      posts.map((post: any) => {
+        return <GameCard card={post} />;
+      })
+    }
+  </div>
+</div>

@@ -1,0 +1,55 @@
+---
+import { contentfulClient } from "@lib/contentful";
+import type { JuegosPost } from "@lib/contentful";
+import GameCard from "@components/Games/GameCard.astro";
+
+const entries = await contentfulClient.getEntries<JuegosPost>({
+  content_type: "articulos",
+});
+
+const posts = entries.items
+  .filter((item) => item.fields.GameInStock === true)
+  .map((item) => {
+    const {
+      title,
+      description,
+      GameBuyPrice,
+      GameInStock,
+      LinkBgg,
+      slug,
+      imagenDestacada,
+    } = item.fields;
+    const { createdAt } = item.sys;
+    return {
+      title,
+      LinkBgg,
+      GameBuyPrice,
+      GameInStock,
+      description,
+      imagenDestacada,
+      slug,
+      textoPrincipal: item.fields.textoPrincipal,
+      createdAt,
+    };
+  })
+  .sort((a: any, b: any) => {
+    return a.createdAt + b.createdAt;
+  });
+
+const myFeaturedPost = posts.slice(0, 8);
+---
+
+<div>
+  <div
+    class="grid relative max-w-6xl grid-cols-1 gap-4 p-3 py-12 mx-auto md:px-0 sm:grid-cols-2 md:grid-cols-4"
+    id="contenido"
+  >
+    {
+      myFeaturedPost.map((post) => (
+        <>
+          <GameCard card={post} />
+        </>
+      ))
+    }
+  </div>
+</div>

@@ -1,0 +1,79 @@
+---
+import Layout from "@layouts/Layout.astro";
+import { contentfulClient } from "@lib/contentful";
+
+import IconNotas from "@assets/notas.svg"
+import type { ComunidadPost } from "@lib/contentful";
+import styles from "@components/Home/Comunidad/NewsCard.module.css";
+const entries = await contentfulClient.getEntries<ComunidadPost>({
+  content_type: "comunidad",
+});
+
+const posts = entries.items
+  .filter((item: any) => item.fields.categoria === "Notas")
+  .map((item) => {
+    const { title, description, slug, featuredImg } = item.fields;
+    const { createdAt } = item.sys;
+    return {
+      title,
+      slug,
+      description,
+      featuredImg,
+      textoPrincipal: item.fields.textoPrincipal,
+      createdAt: new Date(createdAt).toLocaleDateString(),
+    };
+  });
+---
+
+<Layout title="Comunidad">
+  <div
+    class="py-12 text-blue-100 bg-fixed border-t border-blue-100 bg-blue-50 pattern-grid-lg"
+  >
+    <div class="px-2 py-12 mx-auto my-3  max-w-7xl">
+      <div class="flex flex-col items-center justify-center">
+        <img src={IconNotas} class="w-16 m-6 h-16"/>
+        <h1
+          class="mb-6 font-mono text-4xl font-bold tracking-wider text-gray-800"
+        >
+          Educación y los Juegos de Mesa
+        </h1>
+        <h2 class=" font-serif text-xl font-bold text-gray-800">
+          Noticias y entrevistas del campo de la Recreación
+        </h2>
+      </div>
+    </div>
+    <div class={styles.gridContainer}>
+      {
+        posts.map((post) => (
+          <>
+            {post.description && (
+              <div class={styles.item}>
+                <a class={styles.imageContainer} href={`/comunidad/notas/${post.slug}/`}>
+                  <img
+                    class={styles.image}
+                    src={`https:${post.featuredImg.fields.file.url}?fm=webp&fit=thumb&f=center&h=400&w=400`}
+                  />
+                </a>
+                <div class={styles.content}>
+                  <h2 class={styles.title}>{post.title}</h2>
+                  <p class={styles.description}>{post.description}</p>
+                  <time>{post.createdAt}</time>
+                  <div class={styles.buttonContainer}>
+                    {post.textoPrincipal && (
+                      <a
+                        class="btn blue"
+                        href={`/comunidad/notas/${post.slug}/`}
+                      >
+                        Ir a la nota
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+          </>
+        ))
+      }
+    </div>
+  </div>
+</Layout>

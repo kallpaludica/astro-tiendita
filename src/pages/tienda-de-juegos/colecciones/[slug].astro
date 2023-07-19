@@ -1,0 +1,31 @@
+---
+import Layout from "@layouts/Layout.astro";
+import { contentfulClient } from "@lib/contentful";
+import GamesByCollection from "@components/Games/GamesByCollection.astro";
+import Hero from "@components/Heros/HeroPublisher.astro";
+import type { Colecctions } from "@lib/contentful";
+
+export async function getStaticPaths() {
+  const entries = await contentfulClient.getEntries<Colecctions>({
+    content_type: "colecciones",
+    limit: 250,
+  });
+
+  const pages = entries.items.map((item) => ({
+    params: { slug: item.fields.slug },
+    props: {
+      slug: item.fields?.slug,
+      title: item.fields?.title,
+      CollectionGames: item.fields.CollectionGames,
+    },
+  }));
+  return pages;
+}
+const { title, CollectionGames, slug } = Astro.props;
+
+---
+
+<Layout title="Welcome to Astro.">
+  <Hero title={Astro.props.title} />
+  <GamesByCollection collection={CollectionGames} />
+</Layout>

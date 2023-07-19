@@ -1,0 +1,63 @@
+---
+import "@fontsource/josefin-sans";
+import "@fontsource/fredoka";
+import "@fontsource/fredoka-one";
+import "@fontsource/fira-sans";
+import "@fontsource/fira-sans/400-italic.css";
+import "@fontsource/fira-sans/300-italic.css";
+import "@fontsource/fira-sans/300.css";
+import "@fontsource/fira-sans/500.css";
+import "@fontsource/fira-sans/500-italic.css";
+import "@fontsource/fira-sans/600.css";
+import "@fontsource/fira-sans/800.css";
+import "@fontsource/fira-sans/800-italic.css";
+
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/scrollbar";
+
+import "@styles/Offcanvas.css";
+import "@styles/global.css";
+import "@styles/pattern.css";
+import "@styles/Algolia.css";
+import "@styles/VideoReact.css";
+import "@styles/Swiper.css";
+import "@styles/PhotoSwipe.css";
+
+
+import Header from "../components/Header.astro";
+
+export interface Props {
+  title: string;
+  slug?: string;
+}
+const { title, slug } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta
+      name="description"
+      content="Comunidad de juegos en la Provincia de Salta."
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <script>
+      import "../scripts/router.js";
+    </script>
+  </head>
+  <body class={slug ? slug : "default"}>
+    <div data-turbo-permanent id="logo">
+      <Header />
+    </div>
+    <!-- <Header /> -->
+    <div class="pt-16">
+      <slot />
+    </div>
+  </body>
+</html>

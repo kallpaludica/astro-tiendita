@@ -1,0 +1,32 @@
+---
+import Layout from "@layouts/Layout.astro";
+import BlogSingle from "@components/Serializers/Serializers";
+import type { RecursosPost } from "@lib/contentful";
+import { contentfulClient } from "@lib/contentful";
+
+export async function getStaticPaths() {
+  const entries = await contentfulClient.getEntries<RecursosPost>({
+    content_type: "recursos",
+  });
+
+  const pages = entries.items.map((item) => ({
+    params: { slug: item.fields.slug },
+    props: {
+      title: item.fields.title,
+      textoPrincipal: item.fields.textoPrincipal,
+      createdAt: new Date(item.sys.createdAt).toLocaleDateString(),
+    },
+  }));
+  return pages;
+}
+
+const { textoPrincipal, title, createdAt } = Astro.props;
+---
+
+<Layout title="Welcome to Astro.">
+  <main class="prose max-w-2xl mx-auto pt-24">
+    <h1>{title}</h1>
+    <time>{createdAt}</time>
+    <BlogSingle client:load FormatText={textoPrincipal} />
+  </main>
+</Layout>

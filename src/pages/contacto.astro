@@ -1,0 +1,99 @@
+---
+import Whatsapp from "@components/Social/Whatsapp.astro";
+import Layout from "@layouts/Layout.astro";
+import { contentfulClient } from "@lib/contentful";
+import type { ContactInfo } from "@lib/contentful";
+
+const entries = await contentfulClient.getEntries<ContactInfo>({
+  content_type: "contacto",
+});
+
+const posts = entries.items.map((item) => {
+  const { titulo, link } = item.fields;
+  return {
+    titulo,
+    link,
+  };
+});
+
+
+---
+
+<Layout title="Contacto">
+  <main class="bg-gray-200 text-center py-24">
+    <h2 class="text-center text-2xl font-mono">Contacto</h2>
+    <Whatsapp/>
+    <div class="grid grid-cols-5 gap-3 w-full max-w-7xl mt-12 mx-auto">
+      {
+        posts.map((post) => (
+          <>
+            {post.titulo == "Instagram" && (
+              <a
+                href={post.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex flex-col items-center justify-center w-full max-w-sm p-2 mx-auto mb-3 text-center text-purple-500 transition-all duration-500 ease-in-out transform bg-white rounded-md md:mx-3 hover:shadow-md hover:-translate-y-2 hover:text-purple-600"
+              >
+                <b class="my-2 font-serif text-lg font-normal text-gray-900">
+                  Instagram
+                </b>
+                <h2 class="mb-2 font-serif text-lg font-bold">@kallpaludica</h2>
+              </a>
+            )}
+            {post.titulo == "Whatsapp" && (
+              <a
+                href={`https://api.whatsapp.com/send?phone=${post.link}&text=%C2%A1Hola!%F0%9F%A4%97%20`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex flex-col items-center justify-center w-full max-w-sm p-2 mx-auto mb-3 text-center text-green-500 transition-all duration-500 ease-in-out transform bg-white rounded-md md:mx-3 hover:shadow-md hover:-translate-y-2 hover:text-green-600"
+              >
+                <b class="my-2 font-serif text-lg font-normal text-gray-900">
+                  Teléfono
+                </b>
+                <h2 class="mb-2 font-serif text-lg font-bold">{post.link}</h2>
+              </a>
+            )}
+            {post.titulo == "Facebook" && (
+              <a
+                href={post.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex flex-col items-center justify-center w-full max-w-sm p-2 mx-auto mb-3 text-center text-blue-500 transition-all duration-500 ease-in-out transform bg-white rounded-md md:mx-3 hover:shadow-md hover:-translate-y-2 hover:text-blue-600"
+              >
+                <b class="my-2 font-serif text-lg font-normal text-gray-900">
+                  Facebook
+                </b>
+                <h2 class="mb-2 font-serif text-lg font-bold">kallpaludicaa</h2>
+              </a>
+            )}
+            {post.titulo == "Mail" && (
+              <a
+                href={`mailto:${post.link}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex flex-col items-center justify-center w-full max-w-sm p-2 mx-auto mb-3 text-center text-yellow-500 transition-all duration-500 ease-in-out transform bg-white rounded-md md:mx-3 hover:shadow-md hover:-translate-y-2 hover:text-yellow-600"
+              >
+                <b class="my-2 font-serif text-lg font-normal text-gray-900">
+                  Mail
+                </b>
+                <h2 class="mb-2 font-serif text-lg font-bold">{post.link}</h2>
+              </a>
+            )}
+          </>
+        ))
+      }
+      <a
+        class="flex flex-col items-center justify-center w-full max-w-sm p-2 mx-auto mb-3 text-center text-red-500 transition-all duration-500 ease-in-out transform bg-white rounded-md md:mx-3 hover:shadow-md hover:-translate-y-2 hover:text-red-600"
+        target="_blank"
+        rel="noopener noreferrer"
+        title="youtube"
+        href="https://www.youtube.com/channel/UCBiIvzck56BxP9PXCEQ4E3Q"
+      >
+        <b class="my-2 font-serif text-lg font-normal text-gray-900">Youtube</b>
+        <h2 class="mb-2 font-serif text-lg font-bold">Kallpa Lúdica</h2>
+      </a>
+    </div>
+  </main>
+</Layout>
+
+<style></style>

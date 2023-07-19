@@ -1,0 +1,40 @@
+---
+import Layout from "@layouts/Layout.astro";
+import { contentfulClient } from "@lib/contentful";
+import type { JuegosPost } from "@lib/contentful";
+
+const entries = await contentfulClient.getEntries<JuegosPost>({
+  content_type: "colecciones",
+  limit: 250,
+});
+
+const posts = entries.items.map((item: any) => {
+  const { title, slug, icono, CollectionDescription, CollectionGames } =
+    item.fields;
+  return {
+    title,
+    slug,
+    icono,
+    CollectionDescription,
+    CollectionGames,
+  };
+});
+---
+
+<Layout title="Tienda de juegos">
+  <main>
+    <ul class="divide-y-2 space-y-3 max-w-xs mx-auto w-full">
+      {
+        posts.map((post) => (
+          <>
+            <div class="">
+              <a href={`/tienda-de-juegos/colecciones/${post.slug}/`}>
+                <h2 class="text-2xl my-2">{post.title}</h2>
+              </a>
+            </div>
+          </>
+        ))
+      }
+    </ul>
+  </main>
+</Layout>

@@ -1,0 +1,55 @@
+---
+import Layout from "@layouts/Layout.astro";
+import HeroBackImage from "@components/ui/Heros/HeroBackImage.astro";
+import BlogSingle from "@components/Serializers/Serializers";
+import type { RecursosPost } from "@lib/contentful";
+import { contentfulClient } from "@lib/contentful";
+// @ts-ignore
+import { YouTube } from "astro-embed";
+import PhotoSwipe from "@components/ui/Lightbox/PhotoSwipe.astro";
+
+export async function getStaticPaths() {
+  const entries = await contentfulClient.getEntries<RecursosPost>({
+    content_type: "comunidad",
+  });
+  const pages = entries.items
+    .filter((item: any) => item.fields.categoria === "Notas")
+    .map((item: any) => ({
+      params: { slug: item.fields.slug },
+      props: {
+        title: item.fields.title,
+        textoPrincipal: item.fields.textoPrincipal,
+        description: item.fields.description,
+        imagenPortada: item.fields.imagenPortada,
+        createdAt: new Date(item.sys.createdAt).toLocaleDateString(),
+        insertarVideoDeYoutube: item.fields.insertarVideoDeYoutube,
+      },
+    }));
+
+  return pages;
+}
+
+const {
+  textoPrincipal,
+  title,
+  createdAt,
+  description,
+  imagenPortada,
+  insertarVideoDeYoutube,
+} = Astro.props;
+---
+
+<Layout title="Welcome to Astro.">
+  <HeroBackImage
+    title={title}
+    image={imagenPortada.fields.file.url}
+    description={description}
+  />
+
+
+  <main class="prose prose-xl max-w-2xl mx-auto pt-12">
+    {insertarVideoDeYoutube && <YouTube id={insertarVideoDeYoutube} />}
+    <!-- <article class="prose prose-xl" set:html={textoPrincipal} /> -->
+    <BlogSingle client:load FormatText={textoPrincipal} />
+  </main>
+</Layout>

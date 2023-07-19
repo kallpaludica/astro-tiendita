@@ -1,0 +1,121 @@
+---
+
+import Layout from "@layouts/Layout.astro";
+import BlogSingle from "@components/Serializers/Serializers";
+import type { RecursosPost } from "@lib/contentful";
+import { contentfulClient } from "@lib/contentful";
+import HeroBackImage from "@components/ui/Heros/HeroBackImage.astro";
+import SliderHomeAboutComponent from "@components/Home/Sliders/SliderNotas";
+import SimpleGallery from "@components/ui/Lightbox/SimpleGallery";
+
+// @ts-ignore
+import { YouTube } from "astro-embed";
+
+export async function getStaticPaths() {
+  const entries = await contentfulClient.getEntries<RecursosPost>({
+    content_type: "comunidad",
+  });
+
+  const pages = entries.items
+    .filter(
+      (item: any) => item.fields.categoria === "Proyectos que nos potencian"
+    )
+    .map((item: any) => ({
+      params: { slug: item.fields.slug },
+      props: {
+        title: item.fields.title,
+        description: item.fields.description,
+        textoPrincipal: item.fields.textoPrincipal,
+        imagenPortada: item.fields.imagenPortada,
+        fechaDePublicacion: item.fields?.fechaDePublicacion,
+        insertarVideoDeYoutube: item.fields.insertarVideoDeYoutube,
+        featuredImg: item.fields.featuredImg,
+        portfolio: item.fields.portfolio,
+        linkExterno: item.fields.linkExterno,
+        socialMail: item.fields.socialMail,
+      },
+    }));
+
+  return pages;
+}
+
+const {
+  textoPrincipal,
+  title,
+  createdAt,
+  imagenPortada,
+  insertarVideoDeYoutube,
+  featuredImg,
+  portfolio,
+  linkExterno,
+  socialMail,
+  description,
+} = Astro.props;
+---
+
+<Layout title="Welcome to Astro.">
+  <HeroBackImage
+    title={title}
+    image={imagenPortada.fields.file.url}
+    description={description}
+  >
+    {
+      socialMail && (
+        <div class="pb-6">
+          <div class="relative flex flex-col px-6 overflow-hidden md:flex-row ">
+            <div class="block p-2 px-4 font-serif font-normal text-gray-100 duration-700 bg-blue-300 select-all md:text-xl md:tracking-wider bg-opacity-10">
+              {socialMail}
+            </div>
+          </div>
+        </div>
+      )
+    }
+    {
+      linkExterno && (
+        <div class="relative z-50 flex flex-col items-center justify-center w-full max-w-xs px-3 mx-auto duration-200 transform">
+          <a
+            href={linkExterno}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn green mt-5"
+            type="secondary"
+          >
+            Visitar página web
+          </a>
+        </div>
+      )
+    }
+  </HeroBackImage>
+
+  {
+    portfolio && (
+      <>
+        {portfolio.length >= 3 ? (
+          <>
+            <SliderHomeAboutComponent client:visible data={portfolio} />
+          </>
+        ) : (
+          <div class="prose prose-xl max-w-2xl mx-auto pt-2">
+            {portfolio.map((i: any) => (
+              <div class="relative w-auto md:w-full md:h-80 overflow-hidden">
+                <img
+                  src={`https:${i.fields.file.url}?h=450&fm=webp&q=90`}
+                  class="w-full object-cover object-center"
+                  width="300"
+                  height="200"
+                  alt="imagen"
+                  loading="lazy"
+                />
+              </div>
+            ))}
+          </div>
+        )}
+      </>
+    )
+  }
+  <main class="prose prose-xl max-w-2xl mx-auto pt-2">
+    {insertarVideoDeYoutube && <YouTube id={insertarVideoDeYoutube} />}
+    <!-- <article class="prose prose-xl" set:html={textoPrincipal} /> -->
+    <BlogSingle client:load FormatText={textoPrincipal} />
+  </main>
+</Layout>

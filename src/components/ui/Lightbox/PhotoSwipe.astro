@@ -1,0 +1,17 @@
+<script>
+  import PhotoSwipeLightbox from "photoswipe/lightbox";
+  import "photoswipe/style.css";
+
+  const lightbox = new PhotoSwipeLightbox({
+    gallery: "#my-gallery",
+    children: "a",
+    showHideAnimationType: "fade",
+    pswpModule: () => import("photoswipe"),
+  });
+
+  lightbox.init();
+</script>
+
+<div class="pswp-gallery" id="my-gallery">
+  <slot />
+</div>

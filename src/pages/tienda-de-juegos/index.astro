@@ -1,0 +1,49 @@
+---
+import Layout from "@layouts/Layout.astro";
+import { contentfulClient } from "@lib/contentful";
+import type { JuegosPost } from "@lib/contentful";
+
+const entries = await contentfulClient.getEntries<JuegosPost>({
+  content_type: "articulos",
+  limit: 250,
+});
+
+const posts = entries.items.map((item: any) => {
+  const { title, description, GameBuyPrice, LinkBgg, slug, imagenDestacada } =
+    item.fields;
+  const { createdAt } = item.sys;
+  return {
+    title,
+    LinkBgg,
+    GameBuyPrice,
+    description,
+    imagenDestacada,
+    slug,
+    textoPrincipal: item.fields.textoPrincipal,
+    createdAt: new Date(createdAt).toLocaleDateString(),
+  };
+});
+
+---
+
+<Layout title="Tienda de juegos">
+  <main>
+    <ul class="divide-y-2 space-y-3 max-w-xs mx-auto w-full">
+      {
+        posts.map((post) => (
+          <>
+            <div class="">
+              <a href={`/tienda-de-juegos/${post.slug}/`}>
+                <h2 class="text-2xl my-2">{post.title}</h2>
+              </a>
+              <img
+                src={`https:${post.imagenDestacada.fields.file.url}?fm=webp&fit=thumb&f=center&h=250&w=400`}
+              />
+              <time>{post.createdAt}</time>
+            </div>
+          </>
+        ))
+      }
+    </ul>
+  </main>
+</Layout>

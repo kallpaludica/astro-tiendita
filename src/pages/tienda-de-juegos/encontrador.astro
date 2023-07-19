@@ -1,0 +1,12 @@
+---
+import Encontrador from "@components/Encontrador/algolia";
+import Offcanvas from "@components/Encontrador/Offcanvas";
+import Layout from "@layouts/Layout.astro";
+
+---
+
+<Layout title="Tienda de juegos - Encontrador." slug="encontrador">
+  <main>
+    <Encontrador client:idle/>
+  </main>
+</Layout>

@@ -1,0 +1,61 @@
+/*
+		Animate page transitions with plain JS & CSS
+		https://swup.js.org/
+	*/
+.swup-transition-fade {
+  transition: 0.4s;
+  opacity: 1;
+}
+
+html.is-animating .swup-transition-fade {
+  opacity: 0;
+}
+
+.turbo-progress-bar {
+  @apply bg-amber-500;
+}
+
+.btn {
+  @apply inline-flex items-center justify-center px-4 py-2 font-semibold tracking-wide duration-300 bg-gray-200 border-0 rounded-lg shadow-sm cursor-pointer bg-opacity-90 ring-0 ring-gray-800 hover:bg-opacity-80 hover:shadow-none hover:ring-2 focus:ring-2 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 md:text-sm;
+  @apply print:hidden;
+}
+
+.btn.red {
+  @apply text-red-900 bg-red-200 outline-none shadow-red-500/50 ring-red-600 print:bg-gray-200 print:text-gray-900;
+}
+
+.btn.blue {
+  @apply text-white bg-blue-600 outline-none shadow-blue-500/50 ring-blue-600 print:bg-gray-200 print:text-gray-900;
+}
+
+.btn.yellow {
+  @apply outline-none bg-amber-200 text-amber-900 shadow-amber-500/50 ring-amber-600 print:bg-gray-200 print:text-gray-900;
+}
+
+.btn.orange {
+  @apply text-white bg-orange-700 outline-none shadow-orange-700/50 ring-orange-600 print:bg-gray-200 print:text-gray-900;
+}
+
+.btn.yellow {
+  @apply text-yellow-900 bg-yellow-300 outline-none shadow-orange-700/50 ring-orange-600 print:bg-gray-200 print:text-gray-900;
+}
+
+.btn.indigo {
+  @apply text-white bg-indigo-500 outline-none shadow-indigo-700/50 ring-indigo-600 print:bg-gray-200 print:text-gray-900;
+}
+
+.btn.green {
+  @apply outline-none bg-emerald-200 text-emerald-900 shadow-emerald-500/50 ring-emerald-600 print:bg-gray-200 print:text-gray-900;
+}
+
+.btn.primary {
+  @apply font-bold text-white outline-none bg-sky-700 shadow-sky-500/50 ring-sky-600 print:bg-gray-200 print:text-gray-900;
+}
+
+.btn.ghost {
+  @apply font-bold text-gray-600 bg-white outline-none ring-2 ring-gray-300 shadow-gray-500/10 focus-visible:ring-gray-600 hover:bg-gray-100 focus-within:ring-gray-600 print:bg-gray-200 print:text-gray-900;
+}
+
+.btn.dark {
+  @apply font-bold text-gray-200 bg-gray-500 outline-none ring-2 ring-gray-200 shadow-gray-500/10 focus-visible:ring-gray-600 hover:bg-gray-900 focus-within:ring-gray-600 print:bg-gray-200 print:text-gray-900;
+}

@@ -1,0 +1,31 @@
+---
+import { contentfulClient } from "@lib/contentful";
+import SliderAbout from "./Slider/SliderAbout"
+const games = await contentfulClient.getEntries({
+  content_type: "carrousel",
+  limit: 500,
+});
+
+const posts = games.items
+  .filter((item: any) => item.fields.slug === "quienes-somos")
+  .map((item: any) => {
+    const { title, images, slug } = item.fields;
+    return {
+      title,
+      images,
+      slug,
+    };
+  });
+---
+
+<div class="absolute inset-0 w-full h-screen opacity-10">
+    {
+      posts.map((item) => {
+        return (
+          <div>
+            <SliderAbout client:visible images={item.images}/>
+          </div>
+        );
+      })
+    }
+</div>

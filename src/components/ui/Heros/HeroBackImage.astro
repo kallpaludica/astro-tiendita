@@ -1,0 +1,35 @@
+---
+const { title, image, description } = Astro.props;
+---
+
+<div
+  class="relative flex flex-col items-center justify-center overflow-hidden py-44 bg-gradient-to-b to-gray-700 from-gray-900"
+>
+  <div
+    class="flex flex-col w-full max-w-4xl mx-auto md:px-24 md:items-end md:justify-between"
+  >
+    <h1
+      class="relative z-50 w-full px-2 mx-auto font-serif text-3xl font-bold text-center text-white md:text-5xl max-w-7xl"
+    >
+      {title}
+    </h1>
+  </div>
+  {
+    image && (
+      <div class="absolute inset-0 z-0 object-cover w-auto h-screen min-h-screen md:w-full opacity-10">
+        <img
+          title={title}
+          alt={title}
+          class="object-cover w-full h-screen"
+          src={image}
+        />
+      </div>
+    )
+  }
+  <p
+    class="relative z-50 w-full max-w-2xl px-2 mx-auto my-6 font-serif text-xl text-center text-white line-clamp-4 md:text-xl"
+  >
+    {description}
+  </p>
+  <slot/>
+</div>

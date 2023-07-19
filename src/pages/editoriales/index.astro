@@ -1,0 +1,39 @@
+---
+import Layout from "@layouts/Layout.astro";
+import { contentfulClient } from "@lib/contentful";
+import type { ComunidadPost } from "@lib/contentful";
+
+const entries = await contentfulClient.getEntries<ComunidadPost>({
+  content_type: "editorial",
+});
+
+const posts = entries.items.map((item) => {
+  const { title, slug } = item.fields;
+  return {
+    title,
+    slug,
+  };
+});
+
+---
+
+<Layout title="Editorial">
+  <main class="pt-20">
+    <ul class="divide-y-2 space-y-3 max-w-xs mx-auto w-full">
+      {
+        posts.map((post) => ( 
+          <>
+            {post.title && (
+              <div class="">
+                <a href={`/editoriales/${post.slug}/`}>
+                  <h2 class="text-2xl my-2">{post.title}</h2>
+                </a>
+                <p>{post.slug}</p>
+              </div>
+            )}
+          </>
+        ))
+      }
+    </ul>
+  </main>
+</Layout>

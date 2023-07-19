@@ -1,0 +1,26 @@
+---
+import { contentfulClient } from "@lib/contentful";
+import type { Carrousel } from "@lib/contentful";
+import SliderHomeAboutComponent from "./SliderAbout";
+
+
+const entries = await contentfulClient.getEntries<Carrousel>({
+  content_type: "carrousel",
+});
+
+const posts = entries.items
+  .filter((item) => item.fields.title === "Talleres")
+  .map((item) => {
+    const { title, texto, slug, images } = item.fields;
+    return {
+      title,
+      slug,
+      texto,
+      images,
+    };
+  });
+---
+
+<div class="">
+  <SliderHomeAboutComponent client:visible data={posts} />
+</div>

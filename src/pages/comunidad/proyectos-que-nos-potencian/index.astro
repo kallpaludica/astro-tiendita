@@ -1,0 +1,52 @@
+---
+import HomeComunidad from "@components/Home/Comunidad/QueriesComunidadProyectos";
+import Layout from "@layouts/Layout.astro";
+import { contentfulClient } from "@lib/contentful";
+import IconIdeas from "@assets/IconIdeas.svg";
+const entries = await contentfulClient.getEntries({
+  content_type: "comunidad",
+});
+
+const posts = entries.items
+  .filter(
+    (item: any) => item.fields.categoria === "Proyectos que nos potencian"
+  )
+  .map((item: any) => {
+    const {
+      title,
+      slug,
+      featuredImg,
+      fechaDePublicacion,
+      description,
+      categoria,
+    } = item.fields;
+    const { createdAt } = item.sys;
+    return {
+      title,
+      slug,
+      categoria,
+      description,
+      featuredImg,
+      fechaDePublicacion,
+      textoPrincipal: item.fields.textoPrincipal,
+      createdAt: new Date(createdAt).toLocaleDateString(),
+    };
+  });
+---
+
+<Layout title="Editorial">
+  <div class="flex flex-col pt-24 items-center justify-center mb-12">
+    <div>
+      <img src={IconIdeas} class="w-16 m-6 h-16" />
+    </div>
+    <h2 class="mt-3 font-mono text-4xl font-bold text-left text-gray-800">
+      Proyectos que nos potencian
+    </h2>
+    <p class="my-6 text-xl font-bold">
+      Valiosos proyectos que nos rodean día a día.
+    </p>
+  </div>
+  <section id="comunidad" class="scroll-mt-12">
+    <HomeComunidad client:visible post={posts} />
+  </section>
+</Layout>

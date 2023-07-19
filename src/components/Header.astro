@@ -1,0 +1,95 @@
+---
+import KallpaLogo from "@assets/logo.svg";
+import Offcanvas from "./Encontrador/Offcanvas";
+
+const routesLeft = [
+  {
+    title: "Recursos",
+    slug: "/comunidad/recursos",
+  },
+  {
+    title: "Notas",
+    slug: "/comunidad/notas",
+  },
+  {
+    title: "Proyectos que potencian",
+    slug: "/comunidad/proyectos-que-nos-potencian",
+  },
+  {
+    title: "Comunidad",
+    slug: "/comunidad",
+  },
+  {
+    title: "Editoriales",
+    slug: "/editoriales",
+  },
+  {
+    title: "Tienda de juegos",
+    slug: "/tienda-de-juegos/encontrador",
+  },
+  {
+    title: "Quienes somos",
+    slug: "/quienes-somos",
+  },
+  {
+    title: "Contacto",
+    slug: "/contacto",
+  },
+];
+---
+
+<Offcanvas client:load right>
+  <div class="flex flex-col text-gray-900">
+    {
+      routesLeft.map((route, i) => {
+        return (
+          <a
+            class="flex items-center py-3 m-0 font-fredoka text-lg text-center duration-700 border-t-4 border-transparent opacity-100  hover:opacity-80 md:ml-3 md:mr-1 focus:outline-none focus-visible:ring focus-visible:ring-yellow-500 focus:ring-yellow-500 focus-visible:ring-opacity-75"
+            href={route.slug}
+          >
+            <span>{route.title}</span>
+          </a>
+        );
+      })
+    }
+  </div>
+</Offcanvas>
+<header
+  class="headerContainer fixed top-0 left-0 right-0 z-[999] bg-white shadow"
+>
+  <div
+    class="innerWrapper relative flex items-center justify-between w-full max-w-full px-0 mx-auto 2xl:max-w-7xl md:pb-1 sm:pr-6 md:pr-0"
+  >
+    <div class="logo-container">
+      <a href="/" class="flex items-center mr-12">
+        <img
+          src={KallpaLogo}
+          alt="A rocketship in space."
+          class="w-16 h-16 mr-3 kallpa-logo"
+        />
+        <span
+          class="font-mono text-2xl leading-5 duration-700 md:leading-7 md:text-3xl"
+        >
+          Kallpa <br /> lúdica
+        </span>
+      </a>
+    </div>
+
+    <div class="justify-end hidden w-full h-16 nav-left lg:flex">
+      {
+        routesLeft.map((route, i) => {
+          return (
+            <a
+              class="flex items-center py-3 m-0 font-fredoka text-xs text-center duration-700 border-t-4 border-transparent opacity-100 md:text-base hover:opacity-80 md:ml-3 md:mr-1 focus:outline-none focus-visible:ring focus-visible:ring-yellow-500 focus:ring-yellow-500 focus-visible:ring-opacity-75"
+              href={route.slug}
+            >
+              <span>{route.title}</span>
+            </a>
+          );
+        })
+      }
+    </div>
+  </div>
+</header>
+
+<style></style>
